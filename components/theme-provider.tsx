@@ -1,0 +1,16 @@
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ComponentProps, useEffect, useState } from "react";
+
+/** SSR-safe wrapper: only render the provider after mount to avoid
+ * hydration mismatches from next-themes injecting classes. */
+export function ThemeProvider({
+  children,
+  ...props
+}: ComponentProps<typeof NextThemesProvider>) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <>{children}</>;
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+}
