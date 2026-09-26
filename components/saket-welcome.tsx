@@ -9,7 +9,7 @@ import {
   GraduationCapIcon,
   LightbulbIcon,
   SparklesIcon,
-  Volume2Icon,
+  KeyboardIcon,
   MicIcon,
   GitBranchIcon,
 } from "lucide-react";
@@ -17,28 +17,33 @@ import {
 const QUICK_PROMPTS: {
   icon: FC<{ className?: string; strokeWidth?: number }>;
   title: string;
+  subtitle: string;
   prompt: string;
 }[] = [
   {
     icon: GraduationCapIcon,
     title: "Explain a concept",
+    subtitle: "Transformers, like I'm in 2nd year",
     prompt: "Explain transformers in LLMs like I'm a 2nd-year CS student.",
   },
   {
     icon: Code2Icon,
     title: "Write code",
+    subtitle: "Python, with tests",
     prompt:
       "Write a Python function to deduplicate a list while preserving order, with tests.",
   },
   {
     icon: LightbulbIcon,
     title: "Brainstorm",
+    subtitle: "5 AI × sustainability ideas",
     prompt:
       "Give me 5 hackathon project ideas combining AI and sustainability.",
   },
   {
     icon: CalculatorIcon,
     title: "Solve math",
+    subtitle: "(17 × 23 + 456) ÷ 7",
     prompt: "What is (17 * 23 + 456) / 7? Use your calculator tool.",
   },
 ];
@@ -67,7 +72,7 @@ export const SaketGptWelcome: FC = () => {
       </p>
 
       <div className="mt-8 grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2">
-        {QUICK_PROMPTS.map(({ icon: Icon, title, prompt }, i) => (
+        {QUICK_PROMPTS.map(({ icon: Icon, title, subtitle, prompt }, i) => (
           <button
             key={title}
             type="button"
@@ -81,7 +86,7 @@ export const SaketGptWelcome: FC = () => {
             <span className="min-w-0">
               <span className="block text-sm font-semibold">{title}</span>
               <span className="text-muted-foreground block truncate text-xs leading-relaxed">
-                {prompt}
+                {subtitle}
               </span>
             </span>
           </button>
@@ -96,7 +101,7 @@ export const SaketGptWelcome: FC = () => {
           </span>
         ))}
         <span className="flex items-center gap-1.5">
-          <Volume2Icon className="size-3.5 opacity-70" />
+          <KeyboardIcon className="size-3.5 opacity-70" />
           Press Enter to send
         </span>
       </div>
