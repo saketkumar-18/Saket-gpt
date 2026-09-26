@@ -1,8 +1,15 @@
 "use client";
 
 import { useEffect, useState, type FC } from "react";
-import { CheckIcon, ChevronDownIcon, Settings2Icon, SparklesIcon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  MoonIcon,
+  SparklesIcon,
+  SunIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,23 +18,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Textarea } from "@/components/ui/textarea";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { useSettings, DEFAULT_MODELS, type ChatModel } from "@/lib/store";
+import { useTheme } from "next-themes";
+import {
+  useSettings,
+  DEFAULT_MODELS,
+  type ChatModel,
+} from "@/lib/store";
 
-/** Model picker + custom system instructions + theme toggle. */
 export const ChatHeader: FC = () => {
   const { models, model, instructions, setModels, setModel, setInstructions } =
     useSettings();
-  const [openSettings, setOpenSettings] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
   const [draft, setDraft] = useState(instructions);
 
+  // hydrate picker from the server allow-list (source of truth)
   useEffect(() => {
     let cancelled = false;
     fetch("/api/models")
       .then((r) => (r.ok ? r.json() : null))
       .then(
-        (data: { models?: Array<string | { id: string; label?: string; hint?: string }> } | null) => {
+        (data: {
+          models?: Array<string | { id: string; label?: string; hint?: string }>;
+        } | null) => {
           if (cancelled || !data?.models?.length) return;
           const known = new Map(models.map((m) => [m.id, m]));
           setModels(
@@ -57,13 +69,14 @@ export const ChatHeader: FC = () => {
 
   return (
     <>
-      <DropdownMenu open={openSettings} onOpenChange={setOpenSettings}>
+      <DropdownMenu>
         <DropdownMenuTrigger
+          aria-label="Model & settings"
           render={
             <Button
               variant="outline"
               size="sm"
-              className="aui-model-picker gap-1.5"
+              className="aui-model-picker h-9 gap-1.5 rounded-xl"
             />
           }
         >
@@ -80,10 +93,12 @@ export const ChatHeader: FC = () => {
           <DropdownMenuLabel>Model</DropdownMenuLabel>
           {models.map((m) => (
             <DropdownMenuItem key={m.id} onClick={() => setModel(m.id)}>
-              <span className="flex-1 truncate">{m.label}</span>
-              {m.hint && (
-                <span className="text-muted-foreground text-xs">{m.hint}</span>
-              )}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm">{m.label}</span>
+                {m.hint && (
+                  <span className="text-muted-foreground text-xs">{m.hint}</span>
+                )}
+              </span>
               {m.id === model && <CheckIcon className="size-4" />}
             </DropdownMenuItem>
           ))}
@@ -93,7 +108,7 @@ export const ChatHeader: FC = () => {
             onKeyDown={(e) => e.stopPropagation()}
           >
             <label className="text-muted-foreground mb-1 flex items-center gap-1.5 text-xs font-medium">
-              <Settings2Icon className="size-3.5" /> Custom instructions
+              Custom instructions
             </label>
             <Textarea
               value={draft}
@@ -106,7 +121,20 @@ export const ChatHeader: FC = () => {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      <ThemeToggle />
+
+      <Button
+        variant="ghost"
+        size="icon"
+        className="aui-theme-toggle size-9 rounded-xl"
+        aria-label={resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      >
+        {resolvedTheme === "dark" ? (
+          <SunIcon className="size-4.5" />
+        ) : (
+          <MoonIcon className="size-4.5" />
+        )}
+      </Button>
     </>
   );
 };
