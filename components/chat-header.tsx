@@ -72,13 +72,7 @@ export const ChatHeader: FC = () => {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label="Model & settings"
-          render={
-            <Button
-              variant="outline"
-              size="sm"
-              className="aui-model-picker h-9 gap-1.5 rounded-xl"
-            />
-          }
+          className="aui-model-picker border-border bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center gap-1.5 rounded-xl border px-3 text-sm font-medium outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
         >
           <SparklesIcon className="size-3.5" />
           <span className="max-w-32 truncate">{current.label}</span>
