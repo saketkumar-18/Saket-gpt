@@ -22,21 +22,25 @@ export const ChatHeader: FC = () => {
   const [openSettings, setOpenSettings] = useState(false);
   const [draft, setDraft] = useState(instructions);
 
-  // hydrate picker from the server allow-list (source of truth)
   useEffect(() => {
     let cancelled = false;
     fetch("/api/models")
       .then((r) => (r.ok ? r.json() : null))
-      .then((data: { models?: string[] } | null) => {
-        if (cancelled || !data?.models?.length) return;
-        const known = new Map(models.map((m) => [m.id, m]));
-        setModels(
-          data.models.map(
-            (id): ChatModel =>
-              known.get(id) ?? { id, label: id, hint: "server" },
-          ),
-        );
-      })
+      .then(
+        (data: { models?: Array<string | { id: string; label?: string; hint?: string }> } | null) => {
+          if (cancelled || !data?.models?.length) return;
+          const known = new Map(models.map((m) => [m.id, m]));
+          setModels(
+            data.models.map((entry): ChatModel => {
+              const id = typeof entry === "string" ? entry : entry.id;
+              if (typeof entry !== "string" && entry.label) {
+                return { id, label: entry.label, hint: entry.hint ?? "" };
+              }
+              return known.get(id) ?? { id, label: id, hint: "server" };
+            }),
+          );
+        },
+      )
       .catch(() => {});
     return () => {
       cancelled = true;

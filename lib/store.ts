@@ -13,7 +13,7 @@ export type ChatModel = {
  * always reflects the server's allow-list — the server is the source of truth.
  */
 export const DEFAULT_MODELS: ChatModel[] = [
-  { id: "qwen3.8-flash", label: "Qwen 3.8 Flash", hint: "fast" },
+  { id: "mimo-v2.5:free", label: "MiMo 2.5", hint: "free" },
 ];
 
 type SettingsState = {
@@ -37,7 +37,7 @@ export const useSettings = create<SettingsState>()(
           // keep current selection valid when the allow-list changes
           model: models.some((m) => m.id === s.model)
             ? s.model
-            : models[0]?.id ?? s.model,
+            : (models[0]?.id ?? s.model),
         })),
       setModel: (model) => set({ model }),
       setInstructions: (instructions) => set({ instructions }),

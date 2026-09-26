@@ -11,7 +11,8 @@ Your own ChatGPT-style AI assistant — multi-thread, model-agnostic, voice-enab
 
 - 🧵 **Multi-thread chat** — new threads, rename, archive, delete, search, auto-generated titles
 - 💾 **Local persistence** — threads and messages survive reloads via localStorage (zero database; swap in Postgres or assistant-ui cloud with one adapter)
-- 🔌 **Model-agnostic** — any OpenAI-compatible endpoint (b.ai, OpenAI, OpenRouter, Groq, Ollama, vLLM…). Allow-list enforced server-side; picker hydrates from `GET /api/models`
+- 🎨 **Premium UI** — clean light/dark/system themes, gradient user bubbles, glassy composer with focus glow, animated welcome hero with quick-prompt cards, collapsible sidebar, custom scrollbars, reduced-motion support
+- 🔌 **Model-agnostic** — any OpenAI-compatible endpoint (tokenharbor, b.ai, OpenAI, OpenRouter, Groq, Ollama, vLLM…). Allow-list enforced server-side; picker hydrates from `GET /api/models`
 - 🎙️ **Voice** — microphone dictation and read-aloud responses (Web Speech API)
 - 🧠 **Reasoning display** — chain-of-thought summaries stream in a collapsible block
 - 🛠️ **Built-in tools** — exact calculator and timezone-aware clock; the model calls them instead of guessing
@@ -39,9 +40,9 @@ All in `.env.local`:
 
 | Variable         | Default              | Meaning                                        |
 | ---------------- | -------------------- | ---------------------------------------------- |
-| `LLM_BASE_URL`   | `https://api.b.ai/v1` | Any OpenAI-compatible `/v1/chat/completions` base |
+| `LLM_BASE_URL`   | `https://tokenharbor.ai/v1` | Any OpenAI-compatible `/v1/chat/completions` base |
 | `LLM_API_KEY`    | —                    | Provider key (falls back to `OPENAI_API_KEY`)  |
-| `CHAT_MODELS`    | `qwen3.8-flash`      | Comma-separated allow-list shown in the picker |
+| `CHAT_MODELS`    | `mimo-v2.5:free,deepseek-v4-flash:free,mimo-v2.6-flash:free` | Comma-separated allow-list shown in the picker |
 
 Local LLMs work too — start Ollama and set
 `LLM_BASE_URL=http://localhost:11434/v1`, `LLM_API_KEY=*** `CHAT_MODELS=llama3.2`.

@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { MessagesSquare } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { GitHubIcon } from "@/components/github";
 import {
   Sidebar,
@@ -32,8 +32,8 @@ export function ThreadListSidebar({
                   />
                 }
               >
-                <div className="aui-sidebar-header-icon-wrapper bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <MessagesSquare className="aui-sidebar-header-icon size-4" />
+                <div className="from-primary to-violet-600 flex aspect-square size-8 items-center justify-center rounded-xl bg-gradient-to-br shadow-sm">
+                  <Sparkles className="size-4 text-white" />
                 </div>
                 <div className="aui-sidebar-header-heading me-6 flex flex-col gap-0.5 leading-none">
                   <span className="aui-sidebar-header-title font-semibold">
